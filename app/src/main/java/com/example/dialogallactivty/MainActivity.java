@@ -3,6 +3,7 @@ package com.example.dialogallactivty;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +20,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button btnDuo;
     private Button btnProgress;
     private Button btnPop;
-    private Button getBtnProgressNull;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,19 +30,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnDuo = findViewById(R.id.btn_duo);
         btnProgress = findViewById(R.id.btn_progress);
         btnPop = findViewById(R.id.btn_pop);
-        getBtnProgressNull = findViewById(R.id.btn_progress_null);
         btnAnswer.setOnClickListener(this);
         btnDan.setOnClickListener(this);
         btnDuo.setOnClickListener(this);
         btnProgress.setOnClickListener(this);
         btnPop.setOnClickListener(this);
-        getBtnProgressNull.setOnClickListener(this);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onClick(View v) {
-        //通知对话框
+        //todo 通知对话框
         switch (v.getId()) {
             case R.id.btn_answer:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -63,25 +61,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 AlertDialog dialog = builder.create();
                 dialog.show();
                 break;
+            //todo 单选对话框
             case R.id.btn_dan:
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+                final AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
                 builder1.setTitle("单选对话框");
                 final String[] item = new String[]{"条目一", "条目二", "条目三"};
-                builder1.setSingleChoiceItems(item, 0, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(MainActivity.this, "确定点击了条目" + item[which], Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    }
-                });
+
 //                builder1.setPositiveButton("取消", new DialogInterface.OnClickListener() {
 //                    @Override
 //                    public void onClick(DialogInterface dialog, int which) {
 //                        Toast.makeText(MainActivity.this, "确定点击了", Toast.LENGTH_SHORT).show();
 //                    }
 //                });
+                builder1.setSingleChoiceItems(item, 0, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which) {
+
+                        new Handler().postDelayed(new Runnable() {
+                            public void run() {
+                                //execute the task
+                                Toast.makeText(MainActivity.this, "确定点击了条目" + item[which], Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                            }
+                        }, 300);
+                    }
+                });
                 builder1.show();
                 break;
+            //todo 多选对话框
             case R.id.btn_duo:
                 AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
                 builder2.setTitle("多选对话框");
@@ -95,13 +103,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
                 builder2.show();
                 break;
+            //todo 进度条对话框
             case R.id.btn_progress:
                 ProgressDialog progressDialog = new ProgressDialog(this);
                 progressDialog.setTitle("进度条");
                 progressDialog.setMessage("正在加载中");
                 progressDialog.show();
                 break;
-            //提醒对话框
+            //todo 提醒对话框
             case R.id.btn_pop:
                 final ProgressDialog progressDialog1 = new ProgressDialog(this);
                 progressDialog1.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -125,29 +134,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 }.start();
                 break;
-            case R.id.btn_progress_null:
-                final ProgressBar progressBar = new ProgressBar(this);
-                setProgressBarIndeterminateVisibility(true);
-                progressBar.setTag(true);
-                progressBar.setScrollBarStyle(progressBar.getScrollBarStyle());
-                progressBar.setMax(100);
-                progressBar.isShown();
-                new Thread() {
-                    @Override
-                    public void run() {
-                        for (int i = 0; i < 100; i++) {
-                            progressBar.setProgress(i);
-                            try {
-                                Thread.sleep(20);
 
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-
-                }.start();
-                break;
             default:
 
                 break;

@@ -37,10 +37,5 @@
         android:layout_height="wrap_content"
         android:text="显示提醒对话框"
         android:id="@+id/btn_pop"/>
-    <Button
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="显示进度条"
-        android:id="@+id/btn_progress_null"/>
+
 </LinearLayout>
